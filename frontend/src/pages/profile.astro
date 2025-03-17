@@ -4,7 +4,12 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
   <div class="profile" style="display: none;">
-    <h1>Profile</h1>
+    <h1>User Profile</h1>
+    <ul>
+      <li>Username: <span id="username"></span></li>
+      <li>First Name: <span id="firstname"></span></li>
+      <li>Last Name: <span id="lastname"></span></li>
+    </ul>
     <a href="/logout">Log Out</a>
   </div>
 </Layout>
@@ -21,7 +26,11 @@ import Layout from "../layouts/Layout.astro";
       window.location.href = "/login"
       return
     }
-    profile.style.display = "block"
+    const data = await res.json()
+    profile.style.display = "block";
+    (profile.querySelector('#username') as HTMLSpanElement).innerHTML = data.username;
+    (profile.querySelector('#firstname') as HTMLSpanElement).innerHTML = data.firstname;
+    (profile.querySelector('#lastname') as HTMLSpanElement).innerHTML = data.lastname;
   }
 
   checkAuth()
