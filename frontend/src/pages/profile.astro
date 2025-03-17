@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <div class="profile" style="display: none;">
+    <h1>Profile</h1>
+    <a href="/logout">Log Out</a>
+  </div>
+</Layout>
+
+<script>
+  const profile = document.querySelector('.profile') as HTMLDivElement
+
+  const checkAuth = async () => {
+    const res = await fetch(`http://localhost:4500/users/check-auth`, {
+      method: "GET",
+      credentials: "include"
+    })
+    if (!res.ok) {
+      window.location.href = "/login"
+      return
+    }
+    profile.style.display = "block"
+  }
+
+  checkAuth()
+</script>

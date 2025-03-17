@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Create Account</h1>
+  <form id="form-signup">
+    <label>
+      Username:
+      <input type="text" name="username" placeholder="Enter username" required />
+    </label>
+    <label>
+      Password:
+      <input type="password" name="password" placeholder="Enter password" required />
+    </label>
+    <label>
+      First Name:
+      <input type="text" name="firstname" placeholder="Enter first name" required />
+    </label>
+    <label>
+      Last Name:
+      <input type="text" name="lastname" placeholder="Enter last name" required />
+    </label>
+    <button>Sign Up</button>
+  </form>
+</Layout>
+
+<script>
+  const form = document.querySelector('#form-signup') as HTMLFormElement
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    
+    const formData = new FormData(e.target as HTMLFormElement)
+    const formObj = Object.fromEntries(formData.entries()) // Converts form data to JS object
+    const res = await fetch(`http://localhost:4500/users/signup`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formObj)
+    })
+    if (!res.ok) {
+      console.error("Something went wrong")
+      return
+    }
+    window.location.href = "/login"
+  })
+</script>

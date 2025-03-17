@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Log In</h1>
+  <form id="form-login">
+    <label>
+      Username:
+      <input type="text" name="username" placeholder="Enter username" required />
+    </label>
+    <label>
+      Password:
+      <input type="password" name="password" placeholder="Enter password" required />
+    </label>
+    <button>Log In</button>
+  </form>
+</Layout>
+
+<script>
+  const form = document.querySelector('#form-login') as HTMLFormElement
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    
+    const formData = new FormData(e.target as HTMLFormElement)
+    const formObj = Object.fromEntries(formData.entries()) // Converts form data to JS object
+    const res = await fetch(`http://localhost:4500/users/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formObj)
+    })
+    if (!res.ok) {
+      console.error("Login details are incorrect")
+      return
+    }
+    window.location.href = "/profile"
+  })
+</script>
